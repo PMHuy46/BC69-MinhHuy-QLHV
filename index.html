@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS v5.2.1 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+
+    <!-- FontAwesome 6.2.0 CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- (Optional) Use CSS or JS implementation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"
+        integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <style>
+            th{
+                text-align: center;
+            }
+        </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card text-center">
+            <!-- Header -->
+            <div class="d-flex justify-content-between py-3">
+                <h3 class="text-left text-primary font-weight-bold">Danh sách thành viên</h3>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalAddTV">
+                    Thêm thành viên
+                </button>
+
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search name" id="searchName">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"
+                                style="padding: 20px 27px 20px 15px; text-align: center; height: 20px; width: 16px;;"
+                                id="btnTimNV"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered table-hover myTable">
+                <thead class="text-primary">
+                    <tr>
+                        <th>MTV</th>
+                        <th class="nowrap">
+                            <span class="mr-1">Họ và tên</span>
+                            <i class="fa fa-arrow-up" id="SapXepTang"></i>
+                            <i class="fa fa-arrow-down" id="SapXepGiam"></i>
+                        </th>
+                        <th >Địa chỉ</th>
+                        <th>Email</th>
+                        <th>Thân phận</th>
+                        <th>Thông tin còn lại</th>
+                        <th>Chức năng tương ứng</th>
+                        <th style="width: 60px;"><em class="fa fa-cog"></em></th>
+                    </tr>
+                </thead>
+                <tbody id="tableDanhSach">
+                    <!-- thông tin thành viên -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer myCardFooter">
+            <nav>
+                <ul class="pagination justify-content-center" id="ulPhanTrang">
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAddTV" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Form thêm thành viên mới</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-column gap-3" id="form">
+                        <div id="simpInfo">
+                            <div class="form">
+                                <label class="d-block" for="ma">Mã thành viên</label>
+                                <input type="text" id="ma" class="form-control input-sm" placeholder="Nhập mã thành viên">
+                                <span class="sp-thongbao" id="tbma"></span>
+                            </div>
+                            <div class="form">
+                                <label class="d-block" for="hoTen">Họ tên</label>
+                                <input type="text" id="hoTen" class="form-control input-sm" placeholder="Nhập họ tên">
+                                <span class="sp-thongbao" id="tbHoTen"></span>
+                            </div>
+                            <div class="form">
+                                <label class="d-block" for="diaChi">Địa chỉ</label>
+                                <input type="text" id="diaChi" class="form-control input-sm" placeholder="Nhập địa chỉ">
+                                <span class="sp-thongbao" id="tbdiaChi"></span>
+                            </div>
+                            <div class="form">
+                                <label class="d-block" for="email">Email</label>
+                                <input type="text" id="email" class="form-control input-sm" placeholder="Nhập Email">
+                                <span class="sp-thongbao" id="tbemail"></span>
+                            </div>
+                        </div>
+                        <div class="form" id="checkform">
+                            <label for="">Chọn thân phận</label>
+                            <div class="d-flex justify-content-between">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="checkform" id="1"
+                                        onclick="showForm('Student')" value="Student">
+                                    <label class="form-check-label" for="1">
+                                        Student
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="checkform" id="2"
+                                        onclick="showForm('Employee')" value="Employee">
+                                    <label class="form-check-label" for="2">
+                                        Employee
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="checkform" id="3"
+                                        onclick="showForm('Customer')" value="Customer">
+                                    <label class="form-check-label" for="3">
+                                        Customer
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Student" style="display: none;" class="formToInput">
+                            <div class="d-flex justify-content-between gap-5">
+                                <div class="form">
+                                    <label class="d-block" for="diemToan">Điểm toán</label>
+                                    <input type="text" id="diemToan" class="form-control input-sm" placeholder="Nhập điểm toán">
+                                    <span class="sp-thongbao" id="tbDiemToan"></span>
+                                </div>
+                                <div class="form">
+                                    <label class="d-block" for="diemLy">Điểm lý</label>
+                                    <input type="text" id="diemLy" class="form-control input-sm" placeholder="Nhập điểm lý">
+                                    <span class="sp-thongbao" id="tbdiemLy"></span>
+                                </div>
+                                <div class="form">
+                                    <label class="d-block" for="diemHoa">Điểm hóa</label>
+                                    <input type="text" id="diemHoa" class="form-control input-sm" placeholder="Nhập điểm hóa">
+                                    <span class="sp-thongbao" id="tbdiemHoa"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Employee" style="display: none;" class="formToInput">
+                            <div class="d-flex justify-content-between">
+                                <div class="form">
+                                    <label class="d-block" for="ngayLam">Số ngày làm việc</label>
+                                    <input type="text" id="ngayLam" class="form-control input-sm"
+                                        placeholder="Nhập số ngày làm việc">
+                                    <span class="sp-thongbao" id="tbngayLam"></span>
+                                </div>
+                                <div class="form">
+                                    <label class="d-block" for="luong">Tiền lương 1 ngày</label>
+                                    <input type="text" id="luong" class="form-control input-sm" placeholder="Tài khoản">
+                                    <span class="sp-thongbao" id="tbluong"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="Customer" style="display: none;" class="formToInput">
+                            <div class="d-flex justify-content-between">
+                                <div class="form">
+                                    <label class="d-block" for="tenCty">Tên công ty</label>
+                                    <input type="text" id="tenCty" class="form-control input-sm" placeholder="Nhập tên công ty">
+                                    <span class="sp-thongbao" id="tbtenCty"></span>
+                                </div>
+                                <div class="form">
+                                    <label class="d-block" for="hoaDon">Trị giá hóa đơn</label>
+                                    <input type="text" id="hoaDon" class="form-control input-sm" placeholder="Nhập giá trị hóa đơn">
+                                    <span class="sp-thongbao" id="tbhoaDon"></span>
+                                </div>
+                            </div>
+                            <div class="form mt-3">
+                                <textarea class="form-control" placeholder="Để lại đánh giá ở đây" id="danhGia"
+                                    style="height: 100px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btnThemTV" type="button" class="btn btn-success" data-bs-dismiss="modal">Thêm người dùng</button>
+                    <button id="btnCapNhat" type="button" class="btn btn-success" data-bs-dismiss="modal">Cập nhật</button>
+                    <button id="btnDong" type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
+                </div>  
+            </div>
+        </div>
+    </div>
+    </div>
+    <!-- test -->
+    
+    
+
+
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+    <script src="./modal/Person.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>
