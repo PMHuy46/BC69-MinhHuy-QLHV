@@ -10,8 +10,66 @@ function showForm(formId) {
 
 let listPerson = new ListPerson()
 
+const checkvalidation = () => {
+    let arrIdInput = {}
+    let isValid = true;
+    let checkradio = document.querySelector(`#checkform input:checked`)
+    if (checkradio) {
+        arrIdInput = document.querySelectorAll(`#simpInfo input , #${checkradio.value} input`)
+        let errorEle = document.querySelector(`#checkform .sp-thongbao`)
+        isValid &= checkEmptyValue(`${checkradio.value}`, errorEle);
+    } else {
+        arrIdInput = document.querySelectorAll(`#simpInfo input`)
+        let errorEle = document.querySelector(`#checkform .sp-thongbao`)
+        isValid &= checkEmptyValue("", errorEle);
+    }
+
+    for (info of arrIdInput) {
+        let { id, value } = info;
+        let parentEle = info.parentElement;
+        let errorEle = parentEle.querySelector(".sp-thongbao");
+
+        if (id == "ma") {
+            isValid &= checkmaTV(value, errorEle);
+        }
+        if (id == "hoTen") {
+            isValid &= checkName(value, errorEle);
+        }
+        if (id == "email") {
+            isValid &= checkEmailValue(value, errorEle);
+        }
+        if (id == "diaChi") {
+            isValid &= checkEmptyValue(value, errorEle);
+        }
+        if (id == "diemToan" || id == "diemLy" || id == "diemHoa") {
+            isValid &= checkScoreValue(value, errorEle);
+        }
+        if (id == "diemLy") {
+            isValid &= checkScoreValue(value, errorEle);
+        }
+        if (id == "diemHoa") {
+            isValid &= checkScoreValue(value, errorEle);
+        }
+        if (id == "ngayLam") {
+            isValid &= checkNumber(value, errorEle);
+        }
+        if (id == "luong") {
+            isValid &= checkNumber(value, errorEle);
+        }
+        if (id == "hoaDon") {
+            isValid &= checkNumber(value, errorEle);
+        }
+        if (id == "tenCty") {
+            isValid &= checkEmptyValue(value, errorEle);
+        }
+    }
+    if (isValid) {
+        return true
+    }
+}
 
 
+//render
 const renderDs = (arr = listPerson.list) => {
     let content = ""
     for (item of arr) {
@@ -73,26 +131,54 @@ const renderDs = (arr = listPerson.list) => {
     document.querySelector("#tableDanhSach").innerHTML = content
 }
 
-document.querySelector("#btnThemTV").onclick = () => {
-    let ob = getInfoForm()
-    listPerson.addPerson(ob)
-    renderDs()
-    saveLocalStorage()
-    resetForm()
+//lấy dữ liệu từ form
+const getInfoForm = () => {
+    let inputSimp = document.querySelectorAll('#simpInfo input')
+    let check = document.querySelector(`#checkform input:checked`).value
+    let inputformRadio = document.querySelectorAll(`#${check} input`)
+    let ob = {}
+
+    let value = Array.from(inputSimp).map(item => item.value)
+    let value1 = Array.from(inputformRadio).map(item => item.value)
+
+    if (check == "Student") {
+        ob = new Student(...value, ...value1)
+    }
+    else if (check == "Employee") {
+        ob = new Employee(...value, ...value1)
+    }
+    else if (check == "Customer") {
+        let danhGia = document.querySelector('textarea').value
+        ob = new Customer(...value, ...value1, danhGia)
+    }
+    return ob
 }
 
+//thêm mới
+document.querySelector("#btnThemTV").onclick = () => {
+    if(checkvalidation(0)){
+        let ob = getInfoForm()
+        listPerson.addPerson(ob)
+        renderDs()
+        saveLocalStorage()
+        resetForm()
+    }
+}
+
+//như tên
 function resetForm() {
     let arrIdInput = document.querySelectorAll("#simpInfo input, textarea ,.formToInput input")
     for (item of arrIdInput) {
         item.value = "";
     }
-    let check = document.querySelector(`#checkform input:checked`).checked = false
+    document.querySelector(`#checkform input:checked`).checked = false
     let forms = document.getElementsByClassName('formToInput');
     for (let i = 0; i < forms.length; i++) {
         forms[i].style.display = 'none';
     }
 }
 
+//save và get 
 const saveLocalStorage = (key = "listPerson.list", value = listPerson.list) => {
     let stringJSON = JSON.stringify(value)
     localStorage.setItem(key, stringJSON)
@@ -123,13 +209,14 @@ const loadLocalStorage = (key = "listPerson.list") => {
 
 loadLocalStorage()
 
+//như tên
 function deleteTV(ma) {
     listPerson.subPerson(ma)
     renderDs()
     saveLocalStorage()
 }
 
-let arrinput={}
+let arrinput = {}
 
 function getInfo(ma) {
     let perSon = listPerson.list.find(item => item.ma == ma)
@@ -138,50 +225,55 @@ function getInfo(ma) {
 
         if (perSon.nguoiDung == "Customer") {
             arrinput = document.querySelectorAll(`#simpInfo input, #${perSon.nguoiDung} input,#${perSon.nguoiDung} #danhGia `)
-        }else{
+        } else {
             arrinput = document.querySelectorAll(`#simpInfo input, #${perSon.nguoiDung} input`)
         }
-        
+
         showForm(perSon.nguoiDung)
 
         for (item of arrinput) {
             let { id } = item
             item.value = perSon[`${id}`]
-            if(id == "ma"){
+            if (id == "ma") {
                 item.disabled = true;
             }
         }
     }
+    document.querySelector("#btnThemTV").disabled = true
+    document.querySelector("#btnCapNhat").disabled = false
 }
 
-document.querySelector(`#btnCapNhat`).onclick=()=>{
-    let  ob = getInfoForm()
-    let index = listPerson.list.findIndex(item => item.ma == ob.ma)
-    console.log(index)
-    listPerson.list[index]=ob
-    renderDs()
-    saveLocalStorage()
-    resetForm()
+//update
+document.querySelector(`#btnCapNhat`).onclick = () => {
+    if (checkvalidation()) {
+        let ob=getInfoForm()
+        let index = listPerson.list.findIndex(item => item.ma == ob.ma)
+        listPerson.list[index] = ob
+        renderDs()
+        saveLocalStorage()
+        resetForm()
+    }
 }
 
-const getInfoForm =()=>{
-    let inputSimp = document.querySelectorAll('#simpInfo input')
-    let check = document.querySelector(`#checkform input:checked`).value
-    let inputformRadio = document.querySelectorAll(`#${check} input`)
-    let ob = {}
-
-    let value = Array.from(inputSimp).map(item => item.value)
-    let value1 = Array.from(inputformRadio).map(item => item.value)
-
-    if (check == "Student") {
-        ob = new Student(...value, ...value1)
-    }
-    else if (check == "Employee") {
-        ob = new Employee(...value, ...value1)
-    }
-    else if (check == "Customer") {
-        let danhGia = document.querySelector('textarea').value
-        ob = new Customer(...value, ...value1, danhGia)
-    }
-    return ob
+// sắp xếp theo họ tên
+document.querySelector(`.up`).onclick = () => {
+    renderDs(listPerson.list.sort((a, b) => a.hoTen.localeCompare(b.hoTen)))
 }
+document.querySelector(`.down`).onclick = () => {
+    renderDs(listPerson.list.sort((a, b) => b.hoTen.localeCompare(a.hoTen)))
+}
+
+
+//loai người dùng
+function search(event) {
+    let newKeyWord = removeVietnameseTones(event.target.value.toLowerCase().trim());
+
+    let arrfil = listPerson.list.filter(item => {
+        let valueNguoiDung = removeVietnameseTones(item.nguoiDung.toLowerCase().trim());
+        return valueNguoiDung.includes(newKeyWord)
+    })
+    renderDs(arrfil)
+}
+
+document.getElementById("searchNguoiDung").oninput = search;
+

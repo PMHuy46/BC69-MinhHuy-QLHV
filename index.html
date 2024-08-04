@@ -22,10 +22,23 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
-            th{
-                text-align: center;
-            }
-        </style>
+        th {
+            text-align: center;
+        }
+
+        td{
+            vertical-align: middle;
+        }
+
+        .sp-thongbao{
+            display: inline-block
+        }
+
+        .btnfil {
+            border: 0;
+            background: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -46,7 +59,7 @@
             <div class="row mb-3">
                 <div class="col">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search name" id="searchName">
+                        <input type="text" class="form-control" placeholder="Search name" id="searchNguoiDung">
                         <div class="input-group-prepend">
                             <span class="input-group-text"
                                 style="padding: 20px 27px 20px 15px; text-align: center; height: 20px; width: 16px;;"
@@ -59,12 +72,12 @@
                 <thead class="text-primary">
                     <tr>
                         <th>MTV</th>
-                        <th class="nowrap">
+                        <th class="nowrap" style="width: 150px;">
                             <span class="mr-1">Họ và tên</span>
-                            <i class="fa fa-arrow-up" id="SapXepTang"></i>
-                            <i class="fa fa-arrow-down" id="SapXepGiam"></i>
+                            <button class="btnfil up"><i class="fa fa-arrow-up"></i></button>
+                            <button class="btnfil down"><i class="fa fa-arrow-down"></i></button>
                         </th>
-                        <th >Địa chỉ</th>
+                        <th>Địa chỉ</th>
                         <th>Email</th>
                         <th>Thân phận</th>
                         <th>Thông tin còn lại</th>
@@ -103,7 +116,8 @@
                         <div id="simpInfo">
                             <div class="form">
                                 <label class="d-block" for="ma">Mã thành viên</label>
-                                <input type="text" id="ma" class="form-control input-sm" placeholder="Nhập mã thành viên">
+                                <input type="text" id="ma" class="form-control input-sm"
+                                    placeholder="Nhập mã thành viên">
                                 <span class="sp-thongbao" id="tbma"></span>
                             </div>
                             <div class="form">
@@ -127,7 +141,7 @@
                             <div class="d-flex justify-content-between">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="checkform" id="1"
-                                        onclick="showForm('Student')" value="Student">
+                                        onclick="showForm('Student')" value="Student" >
                                     <label class="form-check-label" for="1">
                                         Student
                                     </label>
@@ -147,28 +161,32 @@
                                     </label>
                                 </div>
                             </div>
+                            <span class="sp-thongbao" ></span>
                         </div>
                         <div id="Student" style="display: none;" class="formToInput">
-                            <div class="d-flex justify-content-between gap-5">
+                            <div>
                                 <div class="form">
                                     <label class="d-block" for="diemToan">Điểm toán</label>
-                                    <input type="text" id="diemToan" class="form-control input-sm" placeholder="Nhập điểm toán">
+                                    <input type="text" id="diemToan" class="form-control input-sm"
+                                        placeholder="Nhập điểm toán">
                                     <span class="sp-thongbao" id="tbDiemToan"></span>
                                 </div>
                                 <div class="form">
                                     <label class="d-block" for="diemLy">Điểm lý</label>
-                                    <input type="text" id="diemLy" class="form-control input-sm" placeholder="Nhập điểm lý">
+                                    <input type="text" id="diemLy" class="form-control input-sm"
+                                        placeholder="Nhập điểm lý">
                                     <span class="sp-thongbao" id="tbdiemLy"></span>
                                 </div>
                                 <div class="form">
                                     <label class="d-block" for="diemHoa">Điểm hóa</label>
-                                    <input type="text" id="diemHoa" class="form-control input-sm" placeholder="Nhập điểm hóa">
+                                    <input type="text" id="diemHoa" class="form-control input-sm"
+                                        placeholder="Nhập điểm hóa">
                                     <span class="sp-thongbao" id="tbdiemHoa"></span>
                                 </div>
                             </div>
                         </div>
                         <div id="Employee" style="display: none;" class="formToInput">
-                            <div class="d-flex justify-content-between">
+                            <div >
                                 <div class="form">
                                     <label class="d-block" for="ngayLam">Số ngày làm việc</label>
                                     <input type="text" id="ngayLam" class="form-control input-sm"
@@ -183,15 +201,17 @@
                             </div>
                         </div>
                         <div id="Customer" style="display: none;" class="formToInput">
-                            <div class="d-flex justify-content-between">
+                            <div >
                                 <div class="form">
                                     <label class="d-block" for="tenCty">Tên công ty</label>
-                                    <input type="text" id="tenCty" class="form-control input-sm" placeholder="Nhập tên công ty">
+                                    <input type="text" id="tenCty" class="form-control input-sm"
+                                        placeholder="Nhập tên công ty">
                                     <span class="sp-thongbao" id="tbtenCty"></span>
                                 </div>
                                 <div class="form">
                                     <label class="d-block" for="hoaDon">Trị giá hóa đơn</label>
-                                    <input type="text" id="hoaDon" class="form-control input-sm" placeholder="Nhập giá trị hóa đơn">
+                                    <input type="text" id="hoaDon" class="form-control input-sm"
+                                        placeholder="Nhập giá trị hóa đơn">
                                     <span class="sp-thongbao" id="tbhoaDon"></span>
                                 </div>
                             </div>
@@ -203,17 +223,19 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button id="btnThemTV" type="button" class="btn btn-success" data-bs-dismiss="modal">Thêm người dùng</button>
-                    <button id="btnCapNhat" type="button" class="btn btn-success" data-bs-dismiss="modal">Cập nhật</button>
+                    <button id="btnThemTV" type="button" class="btn btn-success" >Thêm người
+                        dùng</button>
+                    <button id="btnCapNhat" type="button" class="btn btn-success" disabled >Cập
+                        nhật</button>
                     <button id="btnDong" type="button" class="btn btn-danger" data-bs-dismiss="modal">Đóng</button>
-                </div>  
+                </div>
             </div>
         </div>
     </div>
     </div>
     <!-- test -->
-    
-    
+
+
 
 
 
@@ -226,6 +248,8 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
         crossorigin="anonymous"></script>
 
+        <script src="./validation/validation.js"></script>
+        <script src="./utiil/util.js"></script>
     <script src="./modal/Person.js"></script>
     <script src="./js/index.js"></script>
 </body>
